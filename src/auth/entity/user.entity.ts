@@ -2,11 +2,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { AppointmentsEntity } from '../../appointments/entity/appointments.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -23,6 +21,9 @@ export class UserEntity {
 
   @Column({ default: false })
   isAdmin: boolean;
+
+  @Column({ default: 'atWork' })
+  workingHours: 'atWork' | 'break' | 'dayOff';
 
   // @OneToMany(() => AppointmentsEntity, (appoint) => appoint.user, {
   //   eager: false,

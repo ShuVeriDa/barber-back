@@ -12,6 +12,7 @@ import { RegisterDto } from './dto/register.dto';
 import { compare, genSalt, hash } from 'bcryptjs';
 import { RefreshTokenDto } from './dto/refreshToken.dto';
 import { LoginDto } from './dto/login.dto';
+import { WorkingHoursDto } from './dto/workingHours.dto';
 
 @Injectable()
 export class AuthService {
@@ -107,11 +108,31 @@ export class AuthService {
     }
   }
 
+  async changeWorkingHouse(dto: WorkingHoursDto, userId: string) {
+    if (!['atWork', 'break', 'dayOff'].includes(dto.workingHours)) {
+      throw new ForbiddenException(
+        'Error. Choose one of three options: atWork, break, dayOff',
+      );
+    }
+
+    await this.authRepository.update(
+      { id: userId },
+      { workingHours: dto.workingHours },
+    );
+
+    const user = await this.authRepository.findOne({
+      where: { id: userId },
+    });
+
+    return this.returnUserFields(user);
+  }
+
   returnUserFields(user: UserEntity) {
     return {
       id: user.id,
       login: user.login,
       isAdmin: user.isAdmin,
+      workingHours: user.workingHours,
     };
   }
 }

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   HttpCode,
+  Patch,
   Post,
   UsePipes,
   ValidationPipe,
@@ -10,6 +11,9 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { RefreshTokenDto } from './dto/refreshToken.dto';
 import { LoginDto } from './dto/login.dto';
+import { Auth } from './decorators/auth.decorator';
+import { User } from './decorators/user.decorator';
+import { WorkingHoursDto } from './dto/workingHours.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -33,5 +37,11 @@ export class AuthController {
   @Post('register')
   register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
+  }
+
+  @Patch('status')
+  @Auth('admin')
+  changeWorkingHouse(@Body() dto: WorkingHoursDto, @User('id') userId: string) {
+    return this.authService.changeWorkingHouse(dto, userId);
   }
 }
