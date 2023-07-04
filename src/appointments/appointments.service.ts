@@ -45,4 +45,22 @@ export class AppointmentsService {
       phone: Number(fetch.phone),
     };
   }
+
+  async changeIsActive(id: string, dto: { isActive: boolean }) {
+    await this.appointmentRepository.update(
+      {
+        id: id,
+      },
+      { isActive: dto.isActive },
+    );
+
+    const item = await this.appointmentRepository.findOne({
+      where: { id: id },
+    });
+
+    return {
+      ...item,
+      phone: Number(item.phone),
+    };
+  }
 }

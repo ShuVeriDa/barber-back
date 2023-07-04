@@ -23,6 +23,9 @@ export class AppointmentsEntity {
   @Column()
   price: number;
 
+  @Column({ default: true })
+  isActive: boolean;
+
   @Column({ nullable: false })
   dateTime: Date;
 
