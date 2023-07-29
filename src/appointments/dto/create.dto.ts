@@ -1,11 +1,4 @@
-import {
-  IsArray,
-  IsDate,
-  IsDateString,
-  IsNumber,
-  IsObject,
-  IsString,
-} from 'class-validator';
+import { IsArray, IsDateString, IsNumber, IsString } from 'class-validator';
 
 export class CreateDto {
   @IsString()

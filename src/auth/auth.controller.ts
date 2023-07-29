@@ -14,6 +14,7 @@ import { LoginDto } from './dto/login.dto';
 import { Auth } from './decorators/auth.decorator';
 import { User } from './decorators/user.decorator';
 import { WorkingHoursDto } from './dto/workingHours.dto';
+import { BreakTimeDto } from './dto/breakTime.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -43,5 +44,11 @@ export class AuthController {
   @Auth('admin')
   changeWorkingHouse(@Body() dto: WorkingHoursDto, @User('id') userId: string) {
     return this.authService.changeWorkingHouse(dto, userId);
+  }
+
+  @Patch('breaktime')
+  @Auth('admin')
+  breakTime(@Body() dto: BreakTimeDto, @User('id') userId: string) {
+    return this.authService.breakTime(dto, userId);
   }
 }

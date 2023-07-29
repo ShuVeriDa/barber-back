@@ -13,6 +13,8 @@ import { compare, genSalt, hash } from 'bcryptjs';
 import { RefreshTokenDto } from './dto/refreshToken.dto';
 import { LoginDto } from './dto/login.dto';
 import { WorkingHoursDto } from './dto/workingHours.dto';
+import { BreakTimeDto } from './dto/breakTime.dto';
+import * as moment from 'moment/moment';
 
 @Injectable()
 export class AuthService {
@@ -124,7 +126,34 @@ export class AuthService {
       where: { id: userId },
     });
 
-    return this.returnUserFields(user);
+    return {
+      workingHours: user.workingHours,
+    };
+  }
+
+  async breakTime(dto: BreakTimeDto, userId: string) {
+    const start = moment.utc(dto.breakTime.start).toISOString();
+    const end = moment.utc(dto.breakTime.end).toISOString();
+
+    await this.authRepository.update(
+      {
+        id: userId,
+      },
+      {
+        breakTime: {
+          start: start,
+          end: end,
+        },
+      },
+    );
+
+    const user = await this.authRepository.findOne({
+      where: { id: userId },
+    });
+
+    return {
+      breakTime: user.breakTime,
+    };
   }
 
   returnUserFields(user: UserEntity) {

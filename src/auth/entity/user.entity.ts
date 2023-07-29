@@ -25,6 +25,9 @@ export class UserEntity {
   @Column({ default: 'atWork' })
   workingHours: 'atWork' | 'break' | 'dayOff';
 
+  @Column({ nullable: true, type: 'json' })
+  breakTime: { start: Date; end: Date } | null;
+
   // @OneToMany(() => AppointmentsEntity, (appoint) => appoint.user, {
   //   eager: false,
   //   nullable: true,
