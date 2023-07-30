@@ -15,6 +15,11 @@ export class AppointmentsController {
     return this.appointmentService.fetchAll();
   }
 
+  @Get('date-time')
+  fetchAllDateTime() {
+    return this.appointmentService.fetchAllDateTime();
+  }
+
   @Post()
   create(@Body() dto: CreateDto) {
     return this.appointmentService.create(dto);

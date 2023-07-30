@@ -25,6 +25,14 @@ export class AppointmentsService {
     });
   }
 
+  async fetchAllDateTime() {
+    const appointment = await this.appointmentRepository.find();
+
+    return appointment.map((appointment) => {
+      return appointment.dateTime;
+    });
+  }
+
   async create(dto: CreateDto) {
     const dateTime = moment.utc(dto.dateTime).toISOString();
 
