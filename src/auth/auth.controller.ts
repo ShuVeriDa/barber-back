@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
+  Param,
   Patch,
   Post,
   UsePipes,
@@ -38,6 +40,13 @@ export class AuthController {
   @Post('register')
   register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
+  }
+
+  //BreakTime and WorkingHouse
+
+  @Get('status/:id')
+  fetchStatus(@Param('id') userId: string) {
+    return this.authService.fetchStatus(userId);
   }
 
   @Patch('status')

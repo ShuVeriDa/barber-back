@@ -110,6 +110,17 @@ export class AuthService {
     }
   }
 
+  async fetchStatus(userId: string) {
+    const user = await this.authRepository.findOne({
+      where: { id: userId },
+    });
+
+    return {
+      workingHours: user.workingHours,
+      breakTime: user.breakTime,
+    };
+  }
+
   async changeWorkingHouse(dto: WorkingHoursDto, userId: string) {
     if (!['atWork', 'break', 'dayOff'].includes(dto.workingHours)) {
       throw new ForbiddenException(
@@ -117,18 +128,48 @@ export class AuthService {
       );
     }
 
-    await this.authRepository.update(
-      { id: userId },
-      { workingHours: dto.workingHours },
-    );
-
     const user = await this.authRepository.findOne({
       where: { id: userId },
     });
 
-    return {
-      workingHours: user.workingHours,
-    };
+    if (dto.workingHours === 'break' || dto.workingHours === 'dayOff') {
+      if (!dto.breakTime)
+        throw new ForbiddenException('You need to choose a break time');
+
+      const start = moment.utc(dto.breakTime.start).toISOString();
+      const end = moment.utc(dto.breakTime.end).toISOString();
+
+      await this.authRepository.update(
+        { id: userId },
+        {
+          workingHours: dto.workingHours,
+          breakTime: {
+            start: start,
+            end: end,
+          },
+        },
+      );
+
+      return {
+        workingHours: user.workingHours,
+        breakTime: user.breakTime,
+      };
+    }
+
+    if (dto.workingHours === 'atWork') {
+      await this.authRepository.update(
+        { id: userId },
+        {
+          workingHours: dto.workingHours,
+          breakTime: null,
+        },
+      );
+
+      return {
+        workingHours: user.workingHours,
+        breakTime: user.breakTime,
+      };
+    }
   }
 
   async breakTime(dto: BreakTimeDto, userId: string) {
@@ -140,6 +181,7 @@ export class AuthService {
         id: userId,
       },
       {
+        workingHours: 'break',
         breakTime: {
           start: start,
           end: end,
@@ -153,6 +195,7 @@ export class AuthService {
 
     return {
       breakTime: user.breakTime,
+      workingHours: user.workingHours,
     };
   }
 
