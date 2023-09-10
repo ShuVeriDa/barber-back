@@ -14,7 +14,7 @@ import { CardEntity } from './appointments/entity/card.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST,
+      host: 'localhost',
       port: +process.env.DB_PORT,
       username: 'postgres',
       password: '5940530bbbb',
