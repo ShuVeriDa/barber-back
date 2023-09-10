@@ -2,8 +2,6 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { CreateDto } from './dto/create.dto';
-import { User } from '../auth/decorators/user.decorator';
-import { BreakTimeDto } from '../auth/dto/breakTime.dto';
 
 @Controller('appointments')
 export class AppointmentsController {
