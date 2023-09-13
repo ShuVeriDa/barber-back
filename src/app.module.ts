@@ -25,9 +25,6 @@ config();
       entities: [UserEntity, AppointmentsEntity, CardEntity],
       synchronize: true,
     }),
-    // ConfigModule.forRoot({
-    //   envFilePath: '.env',
-    // }),
     AuthModule,
     AppointmentsModule,
   ],

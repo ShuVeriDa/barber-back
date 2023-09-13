@@ -19,6 +19,18 @@ export class UserEntity {
   @Column()
   password: string;
 
+  @Column()
+  firstName: string;
+
+  @Column()
+  lastName: string;
+
+  @Column()
+  avatar: string;
+
+  @Column({ type: 'date' })
+  birthDate: Date;
+
   @Column({ default: false })
   isAdmin: boolean;
 

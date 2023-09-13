@@ -1,4 +1,10 @@
-import { IsBoolean, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  IsBoolean,
+  IsDateString,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 
 export class RegisterDto {
   @IsString()
@@ -15,4 +21,22 @@ export class RegisterDto {
     message: 'Password cannot be less than 6 characters',
   })
   password: string;
+
+  @IsString()
+  @MinLength(3, {
+    message: 'The minimum length of the firstName should be 3 characters',
+  })
+  firstName: string;
+
+  @IsString()
+  @MinLength(3, {
+    message: 'The minimum length of the lastName should be 3 characters',
+  })
+  lastName: string;
+
+  @IsString()
+  avatar: string;
+
+  @IsDateString()
+  birthDate: Date;
 }

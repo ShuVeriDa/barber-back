@@ -96,6 +96,10 @@ export class AuthService {
       login: dto.login,
       isAdmin: dto.isAdmin,
       password: await hash(dto.password, salt),
+      firstName: dto.firstName,
+      lastName: dto.lastName,
+      avatar: dto.avatar,
+      birthDate: dto.birthDate,
     });
 
     const tokens = await this.issueTokenPair(String(user.id));
@@ -204,6 +208,10 @@ export class AuthService {
       id: user.id,
       login: user.login,
       isAdmin: user.isAdmin,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      avatar: user.avatar,
+      birthDate: user.birthDate,
       workingHours: user.workingHours,
     };
   }
