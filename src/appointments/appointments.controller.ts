@@ -26,7 +26,11 @@ export class AppointmentsController {
 
   @Patch('status/:id')
   @Auth('admin')
-  changeIsActive(@Param('id') id: string, @Body() dto: { isActive: boolean }) {
-    return this.appointmentService.changeIsActive(id, dto);
+  changeIsActive(
+    @Param('id') id: string,
+    @User('id') userId: string,
+    @Body() dto: { isActive: boolean },
+  ) {
+    return this.appointmentService.changeIsActive(id, userId, dto);
   }
 }

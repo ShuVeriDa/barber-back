@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UserEntity } from '../user/entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -34,11 +38,11 @@ export class AppointmentsService {
   }
 
   async create(dto: CreateDto) {
-    const user = await this.userRepository.findOne({
+    const barber = await this.userRepository.findOne({
       where: { id: dto.barberId },
     });
 
-    if (!user) {
+    if (!barber) {
       throw new NotFoundException('Barber not found');
     }
 
@@ -50,7 +54,7 @@ export class AppointmentsService {
       price: dto.price,
       dateTime: dateTime,
       phone: dto.phone,
-      user: { id: user.id },
+      user: { id: barber.id },
     });
 
     const fetch = await this.appointmentRepository.findOne({
@@ -69,10 +73,23 @@ export class AppointmentsService {
     };
   }
 
-  async changeIsActive(id: string, dto: { isActive: boolean }) {
+  async changeIsActive(id: string, userId: string, dto: { isActive: boolean }) {
+    const appointment = await this.appointmentRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!appointment) throw new NotFoundException('Appointment not found');
+
+    if (appointment.user.id !== userId) {
+      throw new ForbiddenException("You don't have access to this appointment");
+    }
+
     await this.appointmentRepository.update(
       {
         id: id,
+        user: { id: userId },
       },
       { isActive: dto.isActive },
     );
@@ -80,6 +97,12 @@ export class AppointmentsService {
     const item = await this.appointmentRepository.findOne({
       where: { id: id },
     });
+
+    delete item.user.password;
+    delete item.user.createdAt;
+    delete item.user.updatedAt;
+    delete item.user.isAdmin;
+    delete item.user.login;
 
     return {
       ...item,
