@@ -15,4 +15,7 @@ export class CreateDto {
 
   @IsDateString()
   dateTime: Date;
+
+  @IsString()
+  barberId: string;
 }

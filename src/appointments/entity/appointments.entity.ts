@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { UserEntity } from '../../users/entity/user.entity';
 
 @Entity('appointments')
 export class AppointmentsEntity {
@@ -32,8 +34,8 @@ export class AppointmentsEntity {
   // @Column()
   // dateTime: string;
   //
-  // @ManyToOne(() => UserEntity, { eager: true, nullable: false })
-  // user: UserEntity;
+  @ManyToOne(() => UserEntity, { eager: true, nullable: false })
+  user: UserEntity;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

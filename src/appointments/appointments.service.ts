@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { UserEntity } from '../auth/entity/user.entity';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { UserEntity } from '../users/entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AppointmentsEntity } from './entity/appointments.entity';
@@ -34,6 +34,14 @@ export class AppointmentsService {
   }
 
   async create(dto: CreateDto) {
+    const user = await this.userRepository.findOne({
+      where: { id: dto.barberId },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Barber not found');
+    }
+
     const dateTime = moment.utc(dto.dateTime).toISOString();
 
     const appointment = await this.appointmentRepository.save({
@@ -42,11 +50,18 @@ export class AppointmentsService {
       price: dto.price,
       dateTime: dateTime,
       phone: dto.phone,
+      user: { id: user.id },
     });
 
     const fetch = await this.appointmentRepository.findOne({
       where: { id: appointment.id },
     });
+
+    delete fetch.user.password;
+    delete fetch.user.createdAt;
+    delete fetch.user.updatedAt;
+    delete fetch.user.isAdmin;
+    delete fetch.user.login;
 
     return {
       ...fetch,
