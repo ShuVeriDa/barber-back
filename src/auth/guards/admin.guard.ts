@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UserEntity } from '../../users/entity/user.entity';
+import { UserEntity } from '../../user/entity/user.entity';
 
 @Injectable()
 export class OnlyAdminGuard implements CanActivate {

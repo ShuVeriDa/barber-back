@@ -5,12 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from 'dotenv';
 
 import { AuthModule } from './auth/auth.module';
-import { UserEntity } from './users/entity/user.entity';
+import { UserEntity } from './user/entity/user.entity';
 import { AppointmentsModule } from './appointments/appointments.module';
 import * as process from 'process';
 import { AppointmentsEntity } from './appointments/entity/appointments.entity';
 import { CardEntity } from './appointments/entity/card.entity';
-import { UsersModule } from './users/users.module';
+import { UserModule } from './user/user.module';
 
 config();
 
@@ -28,7 +28,7 @@ config();
     }),
     AuthModule,
     AppointmentsModule,
-    UsersModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

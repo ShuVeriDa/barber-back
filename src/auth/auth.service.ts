@@ -5,15 +5,15 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from '../users/entity/user.entity';
+import { UserEntity } from '../user/entity/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dto/register.dto';
 import { compare, genSalt, hash } from 'bcryptjs';
-import { RefreshTokenDto } from './dto/refreshToken.dto';
+import { RefreshTokenDto } from '../user/dto/refreshToken.dto';
 import { LoginDto } from './dto/login.dto';
-import { WorkingHoursDto } from './dto/workingHours.dto';
-import { BreakTimeDto } from './dto/breakTime.dto';
+import { WorkingHoursDto } from '../user/dto/workingHours.dto';
+import { BreakTimeDto } from '../user/dto/breakTime.dto';
 import * as moment from 'moment/moment';
 
 @Injectable()

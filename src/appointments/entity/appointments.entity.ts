@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserEntity } from '../../users/entity/user.entity';
+import { UserEntity } from '../../user/entity/user.entity';
 
 @Entity('appointments')
 export class AppointmentsEntity {
