@@ -1,10 +1,7 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
-  Param,
-  Patch,
   Post,
   UsePipes,
   ValidationPipe,
@@ -13,10 +10,6 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { RefreshTokenDto } from '../user/dto/refreshToken.dto';
 import { LoginDto } from './dto/login.dto';
-import { Auth } from './decorators/auth.decorator';
-import { User } from './decorators/user.decorator';
-import { WorkingHoursDto } from '../user/dto/workingHours.dto';
-import { BreakTimeDto } from '../user/dto/breakTime.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -43,21 +36,4 @@ export class AuthController {
   }
 
   //BreakTime and WorkingHouse
-
-  @Get('status/:id')
-  fetchStatus(@Param('id') userId: string) {
-    return this.authService.fetchStatus(userId);
-  }
-
-  @Patch('status')
-  @Auth('admin')
-  changeWorkingHouse(@Body() dto: WorkingHoursDto, @User('id') userId: string) {
-    return this.authService.changeWorkingHouse(dto, userId);
-  }
-
-  @Patch('breaktime')
-  @Auth('admin')
-  breakTime(@Body() dto: BreakTimeDto, @User('id') userId: string) {
-    return this.authService.breakTime(dto, userId);
-  }
 }
